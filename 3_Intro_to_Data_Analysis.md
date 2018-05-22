@@ -17,11 +17,19 @@
     conda install numpy=1.10
     conda remove package_name
 	
+Install multiple packages: `conda install numpy scipy pandas`
+
+Specify Version: `conda install numpy=1.10`
+
+Conda automatically installs dependencies for you. 
+	
 #### If you can't remember the name of a package or environment...
 
     conda list
     conda list env
-    conda search search_term
+	conda env list
+    conda search *search_term* (with or without quotes...)
+	conda search '*beautifulsoup*'
 
 #### Creating and Removing Environments
 
@@ -38,6 +46,10 @@ Most of the commands above can be used from within an environment to install or 
 	
     source activate my_env
     source deactivate
+	
+When you're in the environment, you'll see the environment name in the terminal prompt. Something like: `(my_env) ~ $`
+
+The default environment is called `root`.
 	
 ##### On Windows
 
@@ -60,18 +72,51 @@ This will create a new environment with the same name listed in environment.yaml
 
 #### Sharing environments
 
-When sharing your code on GitHub, it's good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using pip freeze for people not using conda.
+When sharing your code on GitHub, it's good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using [pip freeze](https://pip.pypa.io/en/stable/reference/pip_freeze/) for people not using conda.
+
+#### Removing environments
+
+	conda env remove -n env_name
+
+#### Note on Python 2 vs. 3
+
+For most of Python's history including Python 2, printing was done like so:
+
+	print "Hello", "world!"
+	> Hello world!
+	
+This was changed in Python 3 to a function.
+
+	print("Hello", "world!")
+	> Hello world!
+
+The print function was back-ported to Python 2 in version 2.6 through the `__future__` module:
+
+    # In Python 2.6+
+    from __future__ import print_function
+    print("Hello", "world!")
+    > Hello world!
+	
+The `print` statement doesn't work in Python 3. If you want to print something and have it work in both Python versions, you'll need to import `print_function` in your Python 2 code.	
 
 
 ## Jupyter Notebooks
 
 ### Literate programming
 
-Notebooks are a form of **literate programming** proposed by Donald Knuth in 1984. With literate programming, the documentation is written as a narrative alongside the code instead of sitting off by its own. In Donald Knuth's words,
+Notebooks are a form of [**literate programming**](http://www.literateprogramming.com/) proposed by Donald Knuth in 1984. With literate programming, the documentation is written as a narrative alongside the code instead of sitting off by its own. In Donald Knuth's words,
 
 > Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.
 
-After all, code is written for humans, not for computers.
+### How notebooks work
+
+Jupyter notebooks grew out of the IPython project started by Fernando Perez. IPython is an interactive shell, similar to the normal Python shell but with great features like syntax highlighting and code completion. Originally, notebooks worked by sending messages from the web app (the notebook you see in the browser) to an IPython kernel (an IPython application running in the background). The kernel executed the code, then sent it back to the notebook. The current architecture is similar.
+
+The central point is the notebook server. You connect to the server through your browser and the notebook is rendered as a web app. Code you write in the web app is sent through the server to the kernel. The kernel runs the code and sends it back to the server, then any output is rendered back in the browser. When you save the notebook, it is written to the server as a JSON file with a `.ipynb` file extension.
+
+The great part of this architecture is that the kernel doesn't need to run Python. Since the notebook and the kernel are separate, code in any language can be sent between them. For example, two of the earlier non-Python kernels were for the R and Julia languages. With an R kernel, code written in R will be sent to the R kernel where it is executed, exactly the same as Python code running on a Python kernel. IPython notebooks were renamed because notebooks became language agnostic. The new name Jupyter comes from the combination of Julia, Python, and R. If you're interested, here's a [list of available kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels).
+
+Another benefit is that the server can be run anywhere and accessed via the internet. Typically you'll be running the server on your own machine where all your data and notebook files are stored. But, you could also [set up a server](http://jupyter-notebook.readthedocs.io/en/latest/public_server.html) on a remote machine or cloud instance like Amazon's EC2. Then, you can access the notebooks in your browser from anywhere in the world.
 
 ### Installing
 
