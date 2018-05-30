@@ -128,11 +128,23 @@ Jupyter notebooks are also available through pip with `pip install jupyter noteb
 
 ### Launching the notebook server
 
-To start a notebook server, enter `jupyter notebook` in your terminal or console. This will start the server in the directory you ran the command in. That means any notebook files will be saved in that directory. Typically you'd want to start the server in the directory where your notebooks live. However, you can navigate through your file system to where the notebooks are.
+To start a notebook server, enter `jupyter notebook` in your terminal or console. This will start the server in the directory you ran the command in. That means any notebook files will be saved in that directory. 
 
-When you run the command (try it yourself!), the server home should open in your browser. By default, the notebook server runs at `http://localhost:8888`. If you aren't familiar with this, `localhost` means your computer and `8888` is the port the server is communicating on. As long as the server is still running, you can always come back to it by going to http://localhost:8888 in your browser.
+When you run the command, the server home should open in your browser. By default, the notebook server runs at `http://localhost:8888`. If you aren't familiar with this, `localhost` means your computer and `8888` is the port the server is communicating on. As long as the server is still running, you can always come back to it by going to `http://localhost:8888` in your browser.
 
 If you start another server, it'll try to use port `8888`, but since it is occupied, the new server will run on port `8889`. Then, you'd connect to it at `http://localhost:8889`. Every additional notebook server will increment the port number like this.
+
+Over on the right, you can click on "New" to create a new notebook, text file, folder, or terminal. The list under "Notebooks" shows the kernels you have installed. Here I'm running the server in a Python 3 environment, so I have a Python 3 kernel available. You might see Python 2 here. I've also installed kernels for Scala 2.10 and 2.11 which you see in the list.
+
+The tabs at the top show Files, Running, and Cluster.  Clusters previously was where you'd create multiple kernels for use in parallel computing. Now that's been taken over by [ipyparallel](https://ipyparallel.readthedocs.io/en/latest/intro.html) so there isn't much to do there.
+
+### Manage environments from within Jupyter
+
+Install Notebook Conda to help manage your environments. Run the following command:
+
+```conda install nb_conda```
+
+Then if you run the notebook server from a conda environment, you'll also have access to the "Conda" tab. Here you can manage your environments from within Jupyter. You can create new environments, install packages, update packages, export environments and more.
 
 ### Closing the server connection
 
@@ -143,6 +155,8 @@ If you start another server, it'll try to use port `8888`, but since it is occup
 You can shutdown individual notebooks by marking the checkbox next to the notebook on the server home and clicking "Shutdown." 
 
 You can shutdown the entire server by pressing `control + C` twice in the terminal.
+
+**Make sure you save your work first in both cases!!!**
 
 ### Command palette
 

@@ -139,12 +139,17 @@ conda update package_name</code></pre>
 conda install numpy scipy pandas
 conda install numpy=1.10
 conda remove package_name</code></pre>
+<p>Install multiple packages: <code>conda install numpy scipy pandas</code></p>
+<p>Specify Version: <code>conda install numpy=1.10</code></p>
+<p>Conda automatically installs dependencies for you.</p>
 </div>
 <div id="if-you-cant-remember-the-name-of-a-package-or-environment" class="section level4">
 <h4>If you can’t remember the name of a package or environment…</h4>
 <pre><code>conda list
 conda list env
-conda search search_term</code></pre>
+conda env list
+conda search *search_term* (with or without quotes...)
+conda search '*beautifulsoup*'</code></pre>
 </div>
 <div id="creating-and-removing-environments" class="section level4">
 <h4>Creating and Removing Environments</h4>
@@ -160,6 +165,8 @@ conda env remove -n env_name</code></pre>
 <h5>On Mac / Linux</h5>
 <pre><code>source activate my_env
 source deactivate</code></pre>
+<p>When you’re in the environment, you’ll see the environment name in the terminal prompt. Something like: <code>(my_env) ~ $</code></p>
+<p>The default environment is called <code>root</code>.</p>
 </div>
 <div id="on-windows" class="section level5">
 <h5>On Windows</h5>
@@ -178,7 +185,26 @@ deactivate</code></pre>
 </div>
 <div id="sharing-environments" class="section level4">
 <h4>Sharing environments</h4>
-<p>When sharing your code on GitHub, it’s good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using pip freeze for people not using conda.</p>
+<p>When sharing your code on GitHub, it’s good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using <a href="https://pip.pypa.io/en/stable/reference/pip_freeze/">pip freeze</a> for people not using conda.</p>
+</div>
+<div id="removing-environments" class="section level4">
+<h4>Removing environments</h4>
+<pre><code>conda env remove -n env_name</code></pre>
+</div>
+<div id="note-on-python-2-vs.3" class="section level4">
+<h4>Note on Python 2 vs. 3</h4>
+<p>For most of Python’s history including Python 2, printing was done like so:</p>
+<pre><code>print &quot;Hello&quot;, &quot;world!&quot;
+&gt; Hello world!</code></pre>
+<p>This was changed in Python 3 to a function.</p>
+<pre><code>print(&quot;Hello&quot;, &quot;world!&quot;)
+&gt; Hello world!</code></pre>
+<p>The print function was back-ported to Python 2 in version 2.6 through the <code>__future__</code> module:</p>
+<pre><code># In Python 2.6+
+from __future__ import print_function
+print(&quot;Hello&quot;, &quot;world!&quot;)
+&gt; Hello world!</code></pre>
+<p>The <code>print</code> statement doesn’t work in Python 3. If you want to print something and have it work in both Python versions, you’ll need to import <code>print_function</code> in your Python 2 code.</p>
 </div>
 </div>
 </div>
@@ -186,11 +212,17 @@ deactivate</code></pre>
 <h2>Jupyter Notebooks</h2>
 <div id="literate-programming" class="section level3">
 <h3>Literate programming</h3>
-<p>Notebooks are a form of <strong>literate programming</strong> proposed by Donald Knuth in 1984. With literate programming, the documentation is written as a narrative alongside the code instead of sitting off by its own. In Donald Knuth’s words,</p>
+<p>Notebooks are a form of <a href="http://www.literateprogramming.com/"><strong>literate programming</strong></a> proposed by Donald Knuth in 1984. With literate programming, the documentation is written as a narrative alongside the code instead of sitting off by its own. In Donald Knuth’s words,</p>
 <blockquote>
 <p>Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.</p>
 </blockquote>
-<p>After all, code is written for humans, not for computers.</p>
+</div>
+<div id="how-notebooks-work" class="section level3">
+<h3>How notebooks work</h3>
+<p>Jupyter notebooks grew out of the IPython project started by Fernando Perez. IPython is an interactive shell, similar to the normal Python shell but with great features like syntax highlighting and code completion. Originally, notebooks worked by sending messages from the web app (the notebook you see in the browser) to an IPython kernel (an IPython application running in the background). The kernel executed the code, then sent it back to the notebook. The current architecture is similar.</p>
+<p>The central point is the notebook server. You connect to the server through your browser and the notebook is rendered as a web app. Code you write in the web app is sent through the server to the kernel. The kernel runs the code and sends it back to the server, then any output is rendered back in the browser. When you save the notebook, it is written to the server as a JSON file with a <code>.ipynb</code> file extension.</p>
+<p>The great part of this architecture is that the kernel doesn’t need to run Python. Since the notebook and the kernel are separate, code in any language can be sent between them. For example, two of the earlier non-Python kernels were for the R and Julia languages. With an R kernel, code written in R will be sent to the R kernel where it is executed, exactly the same as Python code running on a Python kernel. IPython notebooks were renamed because notebooks became language agnostic. The new name Jupyter comes from the combination of Julia, Python, and R. If you’re interested, here’s a <a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels">list of available kernels</a>.</p>
+<p>Another benefit is that the server can be run anywhere and accessed via the internet. Typically you’ll be running the server on your own machine where all your data and notebook files are stored. But, you could also <a href="http://jupyter-notebook.readthedocs.io/en/latest/public_server.html">set up a server</a> on a remote machine or cloud instance like Amazon’s EC2. Then, you can access the notebooks in your browser from anywhere in the world.</p>
 </div>
 <div id="installing" class="section level3">
 <h3>Installing</h3>
@@ -200,9 +232,17 @@ deactivate</code></pre>
 </div>
 <div id="launching-the-notebook-server" class="section level3">
 <h3>Launching the notebook server</h3>
-<p>To start a notebook server, enter <code>jupyter notebook</code> in your terminal or console. This will start the server in the directory you ran the command in. That means any notebook files will be saved in that directory. Typically you’d want to start the server in the directory where your notebooks live. However, you can navigate through your file system to where the notebooks are.</p>
-<p>When you run the command (try it yourself!), the server home should open in your browser. By default, the notebook server runs at <code>http://localhost:8888</code>. If you aren’t familiar with this, <code>localhost</code> means your computer and <code>8888</code> is the port the server is communicating on. As long as the server is still running, you can always come back to it by going to <a href="http://localhost:8888" class="uri">http://localhost:8888</a> in your browser.</p>
+<p>To start a notebook server, enter <code>jupyter notebook</code> in your terminal or console. This will start the server in the directory you ran the command in. That means any notebook files will be saved in that directory.</p>
+<p>When you run the command, the server home should open in your browser. By default, the notebook server runs at <code>http://localhost:8888</code>. If you aren’t familiar with this, <code>localhost</code> means your computer and <code>8888</code> is the port the server is communicating on. As long as the server is still running, you can always come back to it by going to <code>http://localhost:8888</code> in your browser.</p>
 <p>If you start another server, it’ll try to use port <code>8888</code>, but since it is occupied, the new server will run on port <code>8889</code>. Then, you’d connect to it at <code>http://localhost:8889</code>. Every additional notebook server will increment the port number like this.</p>
+<p>Over on the right, you can click on “New” to create a new notebook, text file, folder, or terminal. The list under “Notebooks” shows the kernels you have installed. Here I’m running the server in a Python 3 environment, so I have a Python 3 kernel available. You might see Python 2 here. I’ve also installed kernels for Scala 2.10 and 2.11 which you see in the list.</p>
+<p>The tabs at the top show Files, Running, and Cluster. Clusters previously was where you’d create multiple kernels for use in parallel computing. Now that’s been taken over by <a href="https://ipyparallel.readthedocs.io/en/latest/intro.html">ipyparallel</a> so there isn’t much to do there.</p>
+</div>
+<div id="manage-environments-from-within-jupyter" class="section level3">
+<h3>Manage environments from within Jupyter</h3>
+<p>Install Notebook Conda to help manage your environments. Run the following command:</p>
+<p><code>conda install nb_conda</code></p>
+<p>Then if you run the notebook server from a conda environment, you’ll also have access to the “Conda” tab. Here you can manage your environments from within Jupyter. You can create new environments, install packages, update packages, export environments and more.</p>
 </div>
 <div id="closing-the-server-connection" class="section level3">
 <h3>Closing the server connection</h3>
@@ -212,6 +252,7 @@ deactivate</code></pre>
 <h3>Shutting down Jupyter</h3>
 <p>You can shutdown individual notebooks by marking the checkbox next to the notebook on the server home and clicking “Shutdown.”</p>
 <p>You can shutdown the entire server by pressing <code>control + C</code> twice in the terminal.</p>
+<p><strong>Make sure you save your work first in both cases!!!</strong></p>
 </div>
 <div id="command-palette" class="section level3">
 <h3>Command palette</h3>
