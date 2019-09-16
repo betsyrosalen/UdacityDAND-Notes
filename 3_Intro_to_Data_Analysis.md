@@ -74,10 +74,6 @@ This will create a new environment with the same name listed in environment.yaml
 
 When sharing your code on GitHub, it's good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using [pip freeze](https://pip.pypa.io/en/stable/reference/pip_freeze/) for people not using conda.
 
-#### Removing environments
-
-	conda env remove -n env_name
-
 #### Note on Python 2 vs. 3
 
 For most of Python's history including Python 2, printing was done like so:
