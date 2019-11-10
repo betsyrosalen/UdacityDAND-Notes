@@ -22,6 +22,10 @@ Install multiple packages: `conda install numpy scipy pandas`
 Specify Version: `conda install numpy=1.10`
 
 Conda automatically installs dependencies for you. 
+
+### Working with evironments
+
+[Anaconda User Guide Managing Environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 	
 #### If you can't remember the name of a package or environment...
 
@@ -34,18 +38,40 @@ Conda automatically installs dependencies for you.
 #### Creating and Removing Environments
 
     conda create -n env_name list_of_packages
-    conda create -n py3env python=3
-    conda create -n py python=3.6
     conda env remove -n env_name
+    
+##### Examples:
+
+    conda create -n pyenv python
+    conda create -n pydataenv python pandas numpy scikit-learn
+    conda create -n py36env python=3.6
 	
 Most of the commands above can be used from within an environment to install or remove packages or update and search packages...
+
+**TIP:** Install all the programs that you want in this environment at the same time. Installing 1 program at a time can lead to dependency conflicts.
+
+#### Install additional Python packages to a virtual environment
+
+To install additional packages only to your virtual environment, enter the following command where *yourenvname* is the name of your environemnt, and *package* is the name of the package you wish to install. **Failure to specify “-n yourenvname” will install the package to the root Python installation.**
+
+	conda install -n yourenvname package
+	
+#### Using pip in an environment
+
+[Documenttion](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#using-pip-in-an-environment)
+
+To use pip in your environment, in your terminal window or an Anaconda Prompt, run:
+
+	conda install -n myenv pip
+	conda activate myenv
+	pip <pip_subcommand>
 	
 #### Entering and Leaving an Environment
 
 ##### On Mac / Linux
 	
-    source activate my_env
-    source deactivate
+    conda activate my_env
+    conda deactivate
 	
 When you're in the environment, you'll see the environment name in the terminal prompt. Something like: `(my_env) ~ $`
 
@@ -72,9 +98,34 @@ This will create a new environment with the same name listed in environment.yaml
 
 #### Sharing environments
 
-When sharing your code on GitHub, it's good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using [pip freeze](https://pip.pypa.io/en/stable/reference/pip_freeze/) for people not using conda.
+When sharing your code on GitHub, it's good practice to make an environment file and include it in the repository. This will make it easier for people to install all the dependencies for your code. I also usually include a pip requirements.txt file using **[pip freeze](https://pip.pypa.io/en/stable/reference/pip_freeze/)** __for people not using conda__.
 
-#### Note on Python 2 vs. 3
+##### To create a requirements.txt file from a conda environment
+
+	conda list #Gives you list of packages used for the environment
+	conda list -e > requirements.txt #Save all the info about packages to your folder
+
+##### Write a requirements.txt file using pip
+
+	pip freeze > requirements.txt
+
+##### Show the contents of the requirements.txt file.
+
+	cat requirements.txt
+	
+##### Install from a requirements.txt file in another environment
+
+	pip install -r requirements.txt
+	
+##### Example:
+
+###### Generate a requirements file and then install from it in another environment.
+
+	$ env1/bin/pip freeze > requirements.txt
+	$ env2/bin/pip install -r requirements.txt
+
+
+## Note on Python 2 vs. 3
 
 For most of Python's history including Python 2, printing was done like so:
 
